@@ -1,0 +1,472 @@
+ Container wallet-ledger-app-1 Running 
+ Container wallet-ledger-mysql-1 Running 
+ Container wallet-ledger-mysql-1 Waiting 
+ Container wallet-ledger-mysql-1 Healthy 
+ Container wallet-ledger-app-1 Waiting 
+ Container wallet-ledger-app-1 Healthy 
+ Container wallet-ledger-k6-run-c5d4a155c935 Creating 
+ Container wallet-ledger-k6-run-c5d4a155c935 Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /scripts/k6.js
+        output: -
+
+     scenarios: (100.00%) 3 scenarios, 200 max VUs, 2m5s max duration (incl. graceful stop):
+              * mixed: 100 looping VUs for 1m0s (exec: mixed, gracefulStop: 30s)
+              * hot_other_reads: 10 looping VUs for 30s (exec: otherReads, startTime: 1m5s, gracefulStop: 30s)
+              * hot_writes: 90 looping VUs for 30s (exec: hotUser, startTime: 1m5s, gracefulStop: 30s)
+
+
+mixed             [   2% ] 100 VUs  0m01.0s/1m0s
+hot_other_reads • [   0% ] waiting  1m04.0s
+hot_writes      • [   0% ] waiting  1m04.0s
+
+mixed             [   3% ] 100 VUs  0m02.0s/1m0s
+hot_other_reads • [   0% ] waiting  1m03.0s
+hot_writes      • [   0% ] waiting  1m03.0s
+
+mixed             [   5% ] 100 VUs  0m03.0s/1m0s
+hot_other_reads • [   0% ] waiting  1m02.0s
+hot_writes      • [   0% ] waiting  1m02.0s
+
+mixed             [   7% ] 100 VUs  0m04.0s/1m0s
+hot_other_reads • [   0% ] waiting  1m01.0s
+hot_writes      • [   0% ] waiting  1m01.0s
+
+mixed             [   8% ] 100 VUs  0m05.0s/1m0s
+hot_other_reads • [   0% ] waiting  1m00.0s
+hot_writes      • [   0% ] waiting  1m00.0s
+
+mixed             [  10% ] 100 VUs  0m06.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m59.0s
+hot_writes      • [   0% ] waiting  0m59.0s
+
+mixed             [  12% ] 100 VUs  0m07.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m58.0s
+hot_writes      • [   0% ] waiting  0m58.0s
+
+mixed             [  13% ] 100 VUs  0m08.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m57.0s
+hot_writes      • [   0% ] waiting  0m57.0s
+
+mixed             [  15% ] 100 VUs  0m09.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m56.0s
+hot_writes      • [   0% ] waiting  0m56.0s
+
+mixed             [  17% ] 100 VUs  0m10.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m55.0s
+hot_writes      • [   0% ] waiting  0m55.0s
+
+mixed             [  18% ] 100 VUs  0m11.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m54.0s
+hot_writes      • [   0% ] waiting  0m54.0s
+
+mixed             [  20% ] 100 VUs  0m12.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m53.0s
+hot_writes      • [   0% ] waiting  0m53.0s
+
+mixed             [  22% ] 100 VUs  0m13.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m52.0s
+hot_writes      • [   0% ] waiting  0m52.0s
+time="2026-11-17T10:03:48Z" level=warning msg="The test has generated metrics with 100098 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+mixed             [  23% ] 100 VUs  0m14.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m51.0s
+hot_writes      • [   0% ] waiting  0m51.0s
+
+mixed             [  25% ] 100 VUs  0m15.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m50.0s
+hot_writes      • [   0% ] waiting  0m50.0s
+
+mixed             [  27% ] 100 VUs  0m16.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m49.0s
+hot_writes      • [   0% ] waiting  0m49.0s
+
+mixed             [  28% ] 100 VUs  0m17.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m48.0s
+hot_writes      • [   0% ] waiting  0m48.0s
+
+mixed             [  30% ] 100 VUs  0m18.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m47.0s
+hot_writes      • [   0% ] waiting  0m47.0s
+
+mixed             [  32% ] 100 VUs  0m19.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m46.0s
+hot_writes      • [   0% ] waiting  0m46.0s
+
+mixed             [  33% ] 100 VUs  0m20.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m45.0s
+hot_writes      • [   0% ] waiting  0m45.0s
+
+mixed             [  35% ] 100 VUs  0m21.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m44.0s
+hot_writes      • [   0% ] waiting  0m44.0s
+
+mixed             [  37% ] 100 VUs  0m22.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m43.0s
+hot_writes      • [   0% ] waiting  0m43.0s
+
+mixed             [  38% ] 100 VUs  0m23.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m42.0s
+hot_writes      • [   0% ] waiting  0m42.0s
+
+mixed             [  40% ] 100 VUs  0m24.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m41.0s
+hot_writes      • [   0% ] waiting  0m41.0s
+
+mixed             [  42% ] 100 VUs  0m25.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m40.0s
+hot_writes      • [   0% ] waiting  0m40.0s
+
+mixed             [  43% ] 100 VUs  0m26.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m39.0s
+hot_writes      • [   0% ] waiting  0m39.0s
+time="2026-11-17T10:04:01Z" level=warning msg="The test has generated metrics with 200223 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+mixed             [  45% ] 100 VUs  0m27.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m38.0s
+hot_writes      • [   0% ] waiting  0m38.0s
+
+mixed             [  47% ] 100 VUs  0m28.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m37.0s
+hot_writes      • [   0% ] waiting  0m37.0s
+
+mixed             [  48% ] 100 VUs  0m29.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m36.0s
+hot_writes      • [   0% ] waiting  0m36.0s
+
+mixed             [  50% ] 100 VUs  0m30.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m35.0s
+hot_writes      • [   0% ] waiting  0m35.0s
+
+mixed             [  52% ] 100 VUs  0m31.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m34.0s
+hot_writes      • [   0% ] waiting  0m34.0s
+
+mixed             [  53% ] 100 VUs  0m32.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m33.0s
+hot_writes      • [   0% ] waiting  0m33.0s
+
+mixed             [  55% ] 100 VUs  0m33.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m32.0s
+hot_writes      • [   0% ] waiting  0m32.0s
+
+mixed             [  57% ] 100 VUs  0m34.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m31.0s
+hot_writes      • [   0% ] waiting  0m31.0s
+
+mixed             [  58% ] 100 VUs  0m35.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m30.0s
+hot_writes      • [   0% ] waiting  0m30.0s
+
+mixed             [  60% ] 100 VUs  0m36.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m29.0s
+hot_writes      • [   0% ] waiting  0m29.0s
+
+mixed             [  62% ] 100 VUs  0m37.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m28.0s
+hot_writes      • [   0% ] waiting  0m28.0s
+
+mixed             [  63% ] 100 VUs  0m38.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m27.0s
+hot_writes      • [   0% ] waiting  0m27.0s
+
+mixed             [  65% ] 100 VUs  0m39.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m26.0s
+hot_writes      • [   0% ] waiting  0m26.0s
+
+mixed             [  67% ] 100 VUs  0m40.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m25.0s
+hot_writes      • [   0% ] waiting  0m25.0s
+
+mixed             [  68% ] 100 VUs  0m41.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m24.0s
+hot_writes      • [   0% ] waiting  0m24.0s
+
+mixed             [  70% ] 100 VUs  0m42.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m23.0s
+hot_writes      • [   0% ] waiting  0m23.0s
+
+mixed             [  72% ] 100 VUs  0m43.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m22.0s
+hot_writes      • [   0% ] waiting  0m22.0s
+
+mixed             [  73% ] 100 VUs  0m44.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m21.0s
+hot_writes      • [   0% ] waiting  0m21.0s
+
+mixed             [  75% ] 100 VUs  0m45.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m20.0s
+hot_writes      • [   0% ] waiting  0m20.0s
+
+mixed             [  77% ] 100 VUs  0m46.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m19.0s
+hot_writes      • [   0% ] waiting  0m19.0s
+
+mixed             [  78% ] 100 VUs  0m47.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m18.0s
+hot_writes      • [   0% ] waiting  0m18.0s
+
+mixed             [  80% ] 100 VUs  0m48.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m17.0s
+hot_writes      • [   0% ] waiting  0m17.0s
+
+mixed             [  82% ] 100 VUs  0m49.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m16.0s
+hot_writes      • [   0% ] waiting  0m16.0s
+
+mixed             [  83% ] 100 VUs  0m50.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m15.0s
+hot_writes      • [   0% ] waiting  0m15.0s
+
+mixed             [  85% ] 100 VUs  0m51.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m14.0s
+hot_writes      • [   0% ] waiting  0m14.0s
+
+mixed             [  87% ] 100 VUs  0m52.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m13.0s
+hot_writes      • [   0% ] waiting  0m13.0s
+
+mixed             [  88% ] 100 VUs  0m53.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m12.0s
+hot_writes      • [   0% ] waiting  0m12.0s
+
+mixed             [  90% ] 100 VUs  0m54.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m11.0s
+hot_writes      • [   0% ] waiting  0m11.0s
+
+mixed             [  92% ] 100 VUs  0m55.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m10.0s
+hot_writes      • [   0% ] waiting  0m10.0s
+
+mixed             [  93% ] 100 VUs  0m56.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m09.0s
+hot_writes      • [   0% ] waiting  0m09.0s
+
+mixed             [  95% ] 100 VUs  0m57.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m08.0s
+hot_writes      • [   0% ] waiting  0m08.0s
+
+mixed             [  97% ] 100 VUs  0m58.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m07.0s
+hot_writes      • [   0% ] waiting  0m07.0s
+time="2026-11-17T10:04:34Z" level=warning msg="The test has generated metrics with 400095 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+mixed             [  98% ] 100 VUs  0m59.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m06.0s
+hot_writes      • [   0% ] waiting  0m06.0s
+
+mixed             [ 100% ] 100 VUs  1m00.0s/1m0s
+hot_other_reads • [   0% ] waiting  0m05.0s
+hot_writes      • [   0% ] waiting  0m05.0s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads • [   0% ] waiting  0m04.0s
+hot_writes      • [   0% ] waiting  0m04.0s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads • [   0% ] waiting  0m03.0s
+hot_writes      • [   0% ] waiting  0m03.0s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads • [   0% ] waiting  0m02.0s
+hot_writes      • [   0% ] waiting  0m02.0s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads • [   0% ] waiting  0m01.0s
+hot_writes      • [   0% ] waiting  0m01.0s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads • [   0% ] waiting  0m00.0s
+hot_writes      • [   0% ] waiting  0m00.0s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [   3% ] 10 VUs   01.0s/30s
+hot_writes        [   3% ] 90 VUs   01.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [   7% ] 10 VUs   02.0s/30s
+hot_writes        [   7% ] 90 VUs   02.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  10% ] 10 VUs   03.0s/30s
+hot_writes        [  10% ] 90 VUs   03.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  13% ] 10 VUs   04.0s/30s
+hot_writes        [  13% ] 90 VUs   04.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  17% ] 10 VUs   05.0s/30s
+hot_writes        [  17% ] 90 VUs   05.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  20% ] 10 VUs   06.0s/30s
+hot_writes        [  20% ] 90 VUs   06.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  23% ] 10 VUs   07.0s/30s
+hot_writes        [  23% ] 90 VUs   07.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  27% ] 10 VUs   08.0s/30s
+hot_writes        [  27% ] 90 VUs   08.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  30% ] 10 VUs   09.0s/30s
+hot_writes        [  30% ] 90 VUs   09.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  33% ] 10 VUs   10.0s/30s
+hot_writes        [  33% ] 90 VUs   10.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  37% ] 10 VUs   11.0s/30s
+hot_writes        [  37% ] 90 VUs   11.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  40% ] 10 VUs   12.0s/30s
+hot_writes        [  40% ] 90 VUs   12.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  43% ] 10 VUs   13.0s/30s
+hot_writes        [  43% ] 90 VUs   13.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  47% ] 10 VUs   14.0s/30s
+hot_writes        [  47% ] 90 VUs   14.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  50% ] 10 VUs   15.0s/30s
+hot_writes        [  50% ] 90 VUs   15.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  53% ] 10 VUs   16.0s/30s
+hot_writes        [  53% ] 90 VUs   16.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  57% ] 10 VUs   17.0s/30s
+hot_writes        [  57% ] 90 VUs   17.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  60% ] 10 VUs   18.0s/30s
+hot_writes        [  60% ] 90 VUs   18.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  63% ] 10 VUs   19.0s/30s
+hot_writes        [  63% ] 90 VUs   19.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  67% ] 10 VUs   20.0s/30s
+hot_writes        [  67% ] 90 VUs   20.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  70% ] 10 VUs   21.0s/30s
+hot_writes        [  70% ] 90 VUs   21.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  73% ] 10 VUs   22.0s/30s
+hot_writes        [  73% ] 90 VUs   22.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  77% ] 10 VUs   23.0s/30s
+hot_writes        [  77% ] 90 VUs   23.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  80% ] 10 VUs   24.0s/30s
+hot_writes        [  80% ] 90 VUs   24.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  83% ] 10 VUs   25.0s/30s
+hot_writes        [  83% ] 90 VUs   25.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  87% ] 10 VUs   26.0s/30s
+hot_writes        [  87% ] 90 VUs   26.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  90% ] 10 VUs   27.0s/30s
+hot_writes        [  90% ] 90 VUs   27.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  93% ] 10 VUs   28.0s/30s
+hot_writes        [  93% ] 90 VUs   28.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [  97% ] 10 VUs   29.0s/30s
+hot_writes        [  97% ] 90 VUs   29.0s/30s
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads   [ 100% ] 10 VUs   30.0s/30s
+hot_writes        [ 100% ] 90 VUs   30.0s/30s
+
+
+  █ THRESHOLDS 
+
+    http_req_duration{endpoint:balance,phase:hot_other}
+    ✓ 'p(99)<10000' p(99)=47.26ms
+
+    http_req_duration{endpoint:balance,phase:mixed}
+    ✓ 'p(99)<10000' p(99)=121.86ms
+
+    http_req_duration{endpoint:credit,phase:hot}
+    ✓ 'p(99)<10000' p(99)=119.78ms
+
+    http_req_duration{endpoint:credit,phase:mixed}
+    ✓ 'p(99)<10000' p(99)=145.6ms
+
+    http_req_duration{endpoint:debit,phase:hot}
+    ✓ 'p(99)<10000' p(99)=120.53ms
+
+    http_req_duration{endpoint:debit,phase:mixed}
+    ✓ 'p(99)<10000' p(99)=145.03ms
+
+    http_req_failed
+    ✓ 'rate==0' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 177244  1864.958328/s
+    checks_succeeded...: 100.00% 177244 out of 177244
+    checks_failed......: 0.00%   0 out of 177244
+
+    ✓ balance ok
+    ✓ credit ok
+    ✓ debit ok
+
+    HTTP
+    http_req_duration........................: avg=50.62ms p(50)=50.39ms p(95)=85.82ms p(99)=129.85ms max=673.78ms
+      { endpoint:balance,phase:hot_other }...: avg=21.43ms p(50)=20.31ms p(95)=27.65ms p(99)=47.26ms  max=126.71ms
+      { endpoint:balance,phase:mixed }.......: avg=44.38ms p(50)=38.9ms  p(95)=82.13ms p(99)=121.86ms max=564.21ms
+      { endpoint:credit,phase:hot }..........: avg=62.62ms p(50)=59.75ms p(95)=75.98ms p(99)=119.78ms max=198.71ms
+      { endpoint:credit,phase:mixed }........: avg=55.1ms  p(50)=49.72ms p(95)=96.87ms p(99)=145.6ms  max=673.78ms
+      { endpoint:debit,phase:hot }...........: avg=62.62ms p(50)=59.75ms p(95)=76.04ms p(99)=120.53ms max=202.47ms
+      { endpoint:debit,phase:mixed }.........: avg=54.92ms p(50)=49.63ms p(95)=96.87ms p(99)=145.03ms max=560.46ms
+      { expected_response:true }.............: avg=50.62ms p(50)=50.39ms p(95)=85.82ms p(99)=129.85ms max=673.78ms
+    http_req_failed..........................: 0.00%  0 out of 177244
+    http_reqs................................: 177244 1864.958328/s
+
+    EXECUTION
+    iteration_duration.......................: avg=50.78ms p(50)=50.53ms p(95)=86.09ms p(99)=130.22ms max=673.91ms
+    iterations...............................: 177244 1864.958328/s
+    vus......................................: 100    min=0           max=100
+    vus_max..................................: 200    min=200         max=200
+
+    NETWORK
+    data_received............................: 43 MB  454 kB/s
+    data_sent................................: 33 MB  350 kB/s
+
+
+
+
+mixed           ✓ [ 100% ] 100 VUs  1m0s
+hot_other_reads ✓ [ 100% ] 10 VUs   30s
+hot_writes      ✓ [ 100% ] 90 VUs   30s
