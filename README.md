@@ -63,7 +63,7 @@ curl -s localhost:8080/balance/u123 -H "Authorization: Bearer recruitment-test-t
 
 **Performance on PHP-FPM.** OPcache with `validate_timestamps=0` and JIT, config/route cache, global middleware stack reduced to auth only, raw queries (no Eloquent), persistent MySQL connections, emulated prepares (1 round trip per query instead of 3), static FPM pool of 64 workers, and Nginx → FPM over a Unix socket (no FastCGI keepalive: idle kept-alive connections pin FPM workers and starve new requests).
 
-**Extras.** `Idempotency-Key` header on credit/debit: a replay returns the original response from the ledger row (`balance_after`) and writes nothing; the same key with a different request returns `422`; a concurrent duplicate loses on the unique index, its whole transaction rolls back, and it returns the winner's result. A `409` writes nothing, so retrying a 409 re-evaluates it. `GET /health` runs `SELECT 1` and returns `{"status":"ok"}` or `503 service_unavailable`. Like every endpoint it needs the bearer token, and the app container's Docker health check calls it with the container's own `API_TOKEN`. Bodies over 64 KB are rejected by Nginx before PHP runs, with `413 payload_too_large` in the same JSON error shape (this check comes before auth, so it is cheap). Graceful shutdown: `STOPSIGNAL SIGQUIT`; the entrypoint drains Nginx, then PHP-FPM (`process_control_timeout=20s`).
+**Extras.** `Idempotency-Key` header on credit/debit: a replay returns the original response from the ledger row (`balance_after`) and writes nothing; the same key with a different request returns `422`; a concurrent duplicate loses on the unique index, its whole transaction rolls back, and it returns the winner's result. A concurrent duplicate *debit* can fail earlier, on the balance check, because the original already spent the money. Before returning that 409, the service looks up the key again and, if the original committed, returns its result instead, so a client retrying a successful payment never sees "insufficient funds" (`test_concurrent_keyed_debits_replay_instead_of_409`). A `409` writes nothing, so retrying a 409 re-evaluates it. `GET /health` runs `SELECT 1` and returns `{"status":"ok"}` or `503 service_unavailable`. Like every endpoint it needs the bearer token, and the app container's Docker health check calls it with the container's own `API_TOKEN`. Bodies over 64 KB are rejected by Nginx before PHP runs, with `413 payload_too_large` in the same JSON error shape (this check comes before auth, so it is cheap). Graceful shutdown: `STOPSIGNAL SIGQUIT`; the entrypoint drains Nginx, then PHP-FPM (`process_control_timeout=20s`).
 
 ### Alternatives considered
 
@@ -91,13 +91,13 @@ Distribution: 50 whales (`whale_01`…`whale_50`) with 105,000 rows each (5.25M)
 | Rows | Generate + `LOAD DATA` | Rebuild indexes | Verify | Total |
 | --- | --- | --- | --- | --- |
 | 1,000,000 | 2.5 s | 1.3 s | 1.1 s | **5.0 s** |
-| 10,500,000 | 25.7 s | 14.9 s | 9.9 s | **50.6 s** |
+| 10,500,000 | 24.3 s | 13.9 s | 9.9 s | **48.2 s** |
 
 The verify step reconciles every wallet against the ledger: 0 mismatching balances at both sizes. Raw output: `loadtest/results/*/1-seed.txt`.
 
 ## Query plans
 
-From `sql/explain.sql` at 10,603,077 ledger rows (`loadtest/results/10.5m/3-explain.txt`). Every statement on the request path touches exactly one wallet row through the primary key; none reads `ledger_entries`.
+From `sql/explain.sql` at 10,594,531 ledger rows (`loadtest/results/10.5m/3-explain.txt`). Every statement on the request path touches exactly one wallet row through the primary key; none reads `ledger_entries`.
 
 **get_balance**: `SELECT balance FROM wallets WHERE user_id = ?`
 
@@ -105,10 +105,10 @@ From `sql/explain.sql` at 10,603,077 ledger rows (`loadtest/results/10.5m/3-expl
 | select_type | table   | type  | key     | key_len | ref   | rows |
 | SIMPLE      | wallets | const | PRIMARY | 66      | const |    1 |
 
-EXPLAIN ANALYZE -> Rows fetched before execution (actual time=0.00958..0.00962 rows=1 loops=1)
+EXPLAIN ANALYZE -> Rows fetched before execution (actual time=0.00892..0.00892 rows=1 loops=1)
 ```
 
-`const` means MySQL resolves the row by a primary-key lookup while planning, before execution. The same query measured 0.0125 ms at 1M rows: both are a single descent of the 7 MB `wallets` primary key, so the time does not depend on the size of the ledger.
+`const` means MySQL resolves the row by a primary-key lookup while planning, before execution. The same query measured 0.0153 ms at 1M rows: both are a single descent of the 7 MB `wallets` primary key, so the time does not depend on the size of the ledger.
 
 **credit**: step 1, `INSERT INTO wallets … ON DUPLICATE KEY UPDATE balance = wallets.balance + new.balance`
 
@@ -151,26 +151,29 @@ Reading the plans:
 
 | Endpoint / phase | p50 @ 1M | p99 @ 1M | p50 @ 10.5M | p99 @ 10.5M |
 | --- | --- | --- | --- | --- |
-| balance (mixed) | 38.0 ms | 108.1 ms | 38.9 ms | 121.9 ms |
-| credit (mixed) | 47.7 ms | 123.2 ms | 49.7 ms | 145.6 ms |
-| debit (mixed) | 47.7 ms | 120.5 ms | 49.6 ms | 145.0 ms |
-| credit (hot user) | 61.7 ms | 146.2 ms | 59.8 ms | 119.8 ms |
-| debit (hot user) | 61.7 ms | 142.8 ms | 59.8 ms | 120.5 ms |
-| balance of other users, during hot phase | 21.1 ms | 51.2 ms | 20.3 ms | 47.3 ms |
+| balance (mixed) | 34.0 ms | 108.9 ms | 42.5 ms | 153.1 ms |
+| credit (mixed) | 44.5 ms | 130.5 ms | 53.5 ms | 184.5 ms |
+| debit (mixed) | 44.5 ms | 129.4 ms | 53.9 ms | 187.4 ms |
+| credit (hot user) | 61.1 ms | 100.0 ms | 63.4 ms | 132.6 ms |
+| debit (hot user) | 61.1 ms | 97.5 ms | 63.5 ms | 130.6 ms |
+| balance of other users, during hot phase | 20.8 ms | 31.9 ms | 21.6 ms | 47.5 ms |
 
 | | 1M | 10.5M |
 | --- | --- | --- |
-| Requests | 181,445 (1,909/s) | 177,244 (1,865/s) |
+| Requests | 192,384 (2,024/s) | 162,040 (1,705/s) |
 | Errors (anything but 200/404/409) | 0 | 0 |
-| Reconciliation after the run (`sql/reconcile.sql`) | 0 rows | 0 rows |
+| Reconciliation after the run (`sql/reconcile.sql`) | 0 mismatching wallets | 0 mismatching wallets |
 
-**1M vs 10.5M.** p50 is within 1–2 ms at both sizes for every endpoint, and throughput is within 3%. The query plans are identical, and the database time per query stays in microseconds. Mixed-traffic p99 is about 15–20% higher at 10.5M. Every write also inserts into the ledger's two secondary indexes, at a random position per user, and at 10.5M rows those indexes are about ten times larger than at 1M, so the occasional write touches a page that is not cached yet. Hot-user latency does not depend on size, because it is bound by queueing on one row lock.
+**1M vs 10.5M.** The query plans are identical, and the database time per query stays in microseconds at both sizes (the balance lookup takes 0.009–0.015 ms). End to end, this run's mixed-traffic p50 is 20–25% higher at 10.5M and p99 about 40% higher; hot-user latency barely moves (p50 61 → 63 ms), because it is bound by queueing on one row lock. Two effects contribute:
 
-On this laptop, request handling on 8 shared cores dominates every number, not SQL: Nginx, 64 PHP-FPM workers, MySQL and k6 all compete for the same CPUs. Run-to-run variation is around ±15% at p50 (the 1M p50s moved that much between two runs on identical data), so differences smaller than that are noise.
+- **Index maintenance on writes.** Every write inserts into the ledger's two secondary indexes at a random position per user. At 10.5M rows those indexes are about ten times larger than at 1M, so more writes touch a page that is not cached yet.
+- **Run-to-run noise.** On this laptop, request handling on 8 shared cores dominates every number, not SQL: Nginx, 64 PHP-FPM workers, MySQL and k6 all compete for the same CPUs. An earlier run with the same settings measured p50 within 1–2 ms between the two sizes (10.5M p50 38.9 ms balance, 49.7 ms credit; p99 122–146 ms), and the 1M p50s moved about ±15% between two runs on identical data.
 
-**Buffer pool.** MySQL runs with `innodb_buffer_pool_size=2G`. At 10.5M rows, `ledger_entries` takes about 1.25 GB (682 MB data + 568 MB indexes) and `wallets` 7 MB, so the working set fits in memory. An earlier run with a 1 GB pool, where it did not fit, gave similar p50s but a 10.5M mixed-traffic p99 of about 200 ms, versus 145 ms here.
+The table shows the latest complete run, so the numbers match the raw files. A fairer comparison would take the median of several runs per size on an otherwise idle machine.
 
-**Hot-user isolation.** While 90 clients hammered `whale_01`, reads for other users stayed at 20–21 ms p50, below the 38–39 ms p50 of the mixed phase. The hot-user requests spend most of their time waiting on one row lock, which uses no CPU, so the other users' requests compete with fewer busy workers. The concurrency test asserts the same thing with real parallel requests.
+**Buffer pool.** MySQL runs with `innodb_buffer_pool_size=2G`. At 10.5M rows, `ledger_entries` takes about 1.25 GB (682 MB data + 568 MB indexes) and `wallets` 7 MB, so the working set fits in memory. With a 1 GB pool, where it did not fit, the 10.5M mixed-traffic p99 was about 200 ms; with 2 GB it has measured 145–187 ms across runs.
+
+**Hot-user isolation.** While 90 clients hammered `whale_01`, reads for other users stayed at 21–22 ms p50, well below the 34–43 ms p50 of the mixed phase. The hot-user requests spend most of their time waiting on one row lock, which uses no CPU, so the other users' requests compete with fewer busy workers. The concurrency test asserts the same thing with real parallel requests.
 
 ## Crash test
 

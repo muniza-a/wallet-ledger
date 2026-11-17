@@ -113,6 +113,17 @@ final class ConcurrencyTest extends TestCase
         $this->assertSame(1, $this->live()->table('ledger_entries')->where('user_id', $user)->count());
     }
 
+    public function test_concurrent_keyed_debits_replay_instead_of_409(): void
+    {
+        $user = "{$this->run}_idemdebit";
+        $this->parallel([$this->req('credit', $user, 100)]);
+        $results = $this->parallel(array_fill(0, 20, $this->req('debit', $user, 60, 'pay-1')), 20);
+
+        $this->assertSame([200 => 20], array_count_values(array_column($results, 'status')));
+        $this->assertSame(40, $this->balanceOf($user));
+        $this->assertSame(1, $this->live()->table('ledger_entries')->where('user_id', $user)->where('type', 'debit')->count());
+    }
+
     public function test_hot_user_does_not_block_other_users(): void
     {
         $hot = "{$this->run}_hot";

@@ -2,7 +2,7 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 +-------------+
 | ledger_rows |
 +-------------+
-|    10603077 |
+|    10594531 |
 +-------------+
 +----+-------------+---------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
 | id | select_type | table   | partitions | type  | possible_keys | key     | key_len | ref   | rows | filtered | Extra |
@@ -12,7 +12,7 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 +-----------------------------------------------------------------------------------------------------+
 | EXPLAIN                                                                                             |
 +-----------------------------------------------------------------------------------------------------+
-| -> Rows fetched before execution  (cost=0..0 rows=1) (actual time=0.00958..0.00962 rows=1 loops=1)
+| -> Rows fetched before execution  (cost=0..0 rows=1) (actual time=0.00892..0.00892 rows=1 loops=1)
  |
 +-----------------------------------------------------------------------------------------------------+
 +----+-------------+---------+------------+------+---------------+------+---------+------+------+----------+-------+

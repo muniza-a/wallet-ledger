@@ -1,5 +1,5 @@
 Truncating tables...
-  done in 0.0 s
+  done in 0.1 s
 Plan: 1,000,000 rows, 100,000 users (50 whales x 10,000 rows, 99,950 regular users, max 288 rows)
 Dropping secondary indexes...
   done in 0.0 s

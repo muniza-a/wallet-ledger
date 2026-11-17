@@ -121,6 +121,17 @@ final class LedgerService
                     throw $e;
                 }
             });
+        } catch (ApiException $e) {
+            // A concurrent duplicate of a keyed debit can fail the balance check because the
+            // original already spent the money, before it reaches the unique index.
+            // If the original committed, answer with its result.
+            if ($idempotencyKey !== null) {
+                $replayed = $this->findReplay($userId, $idempotencyKey, $type, $amount);
+                if ($replayed !== null) {
+                    return $replayed;
+                }
+            }
+            throw $e;
         } catch (QueryException $e) {
             // Two identical requests raced past findReplay(): the loser's ledger insert hit
             // the (user_id, idempotency_key) unique index and its whole transaction,

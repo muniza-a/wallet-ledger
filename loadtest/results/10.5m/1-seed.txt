@@ -1,5 +1,5 @@
 Truncating tables...
-  done in 0.1 s
+  done in 0.0 s
 Plan: 10,500,000 rows, 100,000 users (50 whales x 105,000 rows, 99,950 regular users, max 3,029 rows)
 Dropping secondary indexes...
   done in 0.0 s
@@ -15,10 +15,10 @@ Generating + loading ledger rows...
   loaded 9,000,000 rows
   loaded 10,000,000 rows
   loaded 10,500,000 rows
-  done in 25.7 s
+  done in 24.3 s
 Rebuilding secondary indexes...
-  done in 14.9 s
+  done in 13.9 s
 Analyzing tables...
   done in 0.0 s
-Verify (9.9 s): 10,500,001 ledger rows, 100,001 wallets, 100,001 users in ledger, 0 mismatching balances
-Seed finished in 50.6 s
+Verify (9.9 s): 10,500,000 ledger rows, 100,000 wallets, 100,000 users in ledger, 0 mismatching balances
+Seed finished in 48.2 s

@@ -103,4 +103,20 @@ final class LedgerApiTest extends ApiTestCase
         $this->credit('u1', 100, ['Idempotency-Key' => 'same'])->assertJson(['balance' => 100]);
         $this->credit('u2', 200, ['Idempotency-Key' => 'same'])->assertJson(['balance' => 200]);
     }
+
+    public function test_keyed_debit_without_funds_is_409_and_can_be_retried_after_a_credit(): void
+    {
+        $headers = ['Idempotency-Key' => 'pay-1'];
+        $this->assertError($this->debit('ghost', 60, $headers), 404, 'user_not_found');
+
+        $this->credit('u1', 50);
+        $this->assertError($this->debit('u1', 60, $headers), 409, 'insufficient_funds');
+        $this->assertSame(0, DB::table('ledger_entries')->where('type', 'debit')->count());
+
+        // A 409 writes nothing, so the same key is not "used" yet.
+        $this->credit('u1', 50);
+        $this->debit('u1', 60, $headers)->assertOk()->assertJson(['balance' => 40]);
+        $this->debit('u1', 60, $headers)->assertOk()->assertJson(['balance' => 40]); // replay
+        $this->assertSame(1, DB::table('ledger_entries')->where('type', 'debit')->count());
+    }
 }

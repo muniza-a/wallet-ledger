@@ -4,8 +4,8 @@
  Container wallet-ledger-mysql-1 Healthy 
  Container wallet-ledger-app-1 Waiting 
  Container wallet-ledger-app-1 Healthy 
- Container wallet-ledger-k6-run-f61267c7a6d3 Creating 
- Container wallet-ledger-k6-run-f61267c7a6d3 Created 
+ Container wallet-ledger-k6-run-e22580712f5f Creating 
+ Container wallet-ledger-k6-run-e22580712f5f Created 
 
          /\      Grafana   /‾‾/  
     /\  /  \     |\  __   /  /   
@@ -63,11 +63,11 @@ hot_writes      • [   0% ] waiting  0m56.0s
 mixed             [  17% ] 100 VUs  0m10.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m55.0s
 hot_writes      • [   0% ] waiting  0m55.0s
+time="2026-11-17T10:58:18Z" level=warning msg="The test has generated metrics with 100350 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
 
 mixed             [  18% ] 100 VUs  0m11.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m54.0s
 hot_writes      • [   0% ] waiting  0m54.0s
-time="2026-11-17T10:01:18Z" level=warning msg="The test has generated metrics with 100053 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
 
 mixed             [  20% ] 100 VUs  0m12.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m53.0s
@@ -108,6 +108,7 @@ hot_writes      • [   0% ] waiting  0m45.0s
 mixed             [  35% ] 100 VUs  0m21.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m44.0s
 hot_writes      • [   0% ] waiting  0m44.0s
+time="2026-11-17T10:58:29Z" level=warning msg="The test has generated metrics with 200151 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
 
 mixed             [  37% ] 100 VUs  0m22.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m43.0s
@@ -116,7 +117,6 @@ hot_writes      • [   0% ] waiting  0m43.0s
 mixed             [  38% ] 100 VUs  0m23.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m42.0s
 hot_writes      • [   0% ] waiting  0m42.0s
-time="2026-11-17T10:01:30Z" level=warning msg="The test has generated metrics with 200160 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
 
 mixed             [  40% ] 100 VUs  0m24.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m41.0s
@@ -229,6 +229,7 @@ hot_writes      • [   0% ] waiting  0m15.0s
 mixed             [  85% ] 100 VUs  0m51.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m14.0s
 hot_writes      • [   0% ] waiting  0m14.0s
+time="2026-11-17T10:58:59Z" level=warning msg="The test has generated metrics with 400050 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
 
 mixed             [  87% ] 100 VUs  0m52.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m13.0s
@@ -245,7 +246,6 @@ hot_writes      • [   0% ] waiting  0m11.0s
 mixed             [  92% ] 100 VUs  0m55.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m10.0s
 hot_writes      • [   0% ] waiting  0m10.0s
-time="2026-11-17T10:02:02Z" level=warning msg="The test has generated metrics with 400140 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
 
 mixed             [  93% ] 100 VUs  0m56.0s/1m0s
 hot_other_reads • [   0% ] waiting  0m09.0s
@@ -411,22 +411,22 @@ hot_writes        [ 100% ] 90 VUs   30.0s/30s
   █ THRESHOLDS 
 
     http_req_duration{endpoint:balance,phase:hot_other}
-    ✓ 'p(99)<10000' p(99)=51.16ms
+    ✓ 'p(99)<10000' p(99)=31.89ms
 
     http_req_duration{endpoint:balance,phase:mixed}
-    ✓ 'p(99)<10000' p(99)=108.13ms
+    ✓ 'p(99)<10000' p(99)=108.85ms
 
     http_req_duration{endpoint:credit,phase:hot}
-    ✓ 'p(99)<10000' p(99)=146.2ms
+    ✓ 'p(99)<10000' p(99)=100ms
 
     http_req_duration{endpoint:credit,phase:mixed}
-    ✓ 'p(99)<10000' p(99)=123.19ms
+    ✓ 'p(99)<10000' p(99)=130.45ms
 
     http_req_duration{endpoint:debit,phase:hot}
-    ✓ 'p(99)<10000' p(99)=142.81ms
+    ✓ 'p(99)<10000' p(99)=97.47ms
 
     http_req_duration{endpoint:debit,phase:mixed}
-    ✓ 'p(99)<10000' p(99)=120.5ms
+    ✓ 'p(99)<10000' p(99)=129.42ms
 
     http_req_failed
     ✓ 'rate==0' rate=0.00%
@@ -434,35 +434,35 @@ hot_writes        [ 100% ] 90 VUs   30.0s/30s
 
   █ TOTAL RESULTS 
 
-    checks_total.......: 181445  1909.095531/s
-    checks_succeeded...: 100.00% 181445 out of 181445
-    checks_failed......: 0.00%   0 out of 181445
+    checks_total.......: 192384  2024.250062/s
+    checks_succeeded...: 100.00% 192384 out of 192384
+    checks_failed......: 0.00%   0 out of 192384
 
     ✓ balance ok
     ✓ debit ok
     ✓ credit ok
 
     HTTP
-    http_req_duration........................: avg=49.46ms p(50)=47.99ms p(95)=83.11ms p(99)=119.56ms max=523.29ms
-      { endpoint:balance,phase:hot_other }...: avg=22.74ms p(50)=21.13ms p(95)=30.41ms p(99)=51.16ms  max=153.97ms
-      { endpoint:balance,phase:mixed }.......: avg=42.36ms p(50)=38.01ms p(95)=76.67ms p(99)=108.13ms max=523.29ms
-      { endpoint:credit,phase:hot }..........: avg=66.06ms p(50)=61.65ms p(95)=87.04ms p(99)=146.2ms  max=288.28ms
-      { endpoint:credit,phase:mixed }........: avg=51.54ms p(50)=47.65ms p(95)=88.51ms p(99)=123.19ms max=406.06ms
-      { endpoint:debit,phase:hot }...........: avg=65.94ms p(50)=61.71ms p(95)=86.47ms p(99)=142.81ms max=287.87ms
-      { endpoint:debit,phase:mixed }.........: avg=51.35ms p(50)=47.69ms p(95)=87.34ms p(99)=120.5ms  max=355.65ms
-      { expected_response:true }.............: avg=49.46ms p(50)=47.99ms p(95)=83.11ms p(99)=119.56ms max=523.29ms
-    http_req_failed..........................: 0.00%  0 out of 181445
-    http_reqs................................: 181445 1909.095531/s
+    http_req_duration........................: avg=46.63ms p(50)=44.12ms p(95)=78.41ms p(99)=114.31ms max=383.06ms
+      { endpoint:balance,phase:hot_other }...: avg=21.46ms p(50)=20.82ms p(95)=25.24ms p(99)=31.89ms  max=115.16ms
+      { endpoint:balance,phase:mixed }.......: avg=38.95ms p(50)=34.01ms p(95)=74.45ms p(99)=108.85ms max=316.22ms
+      { endpoint:credit,phase:hot }..........: avg=62.49ms p(50)=61.07ms p(95)=71.01ms p(99)=100ms    max=242.23ms
+      { endpoint:credit,phase:mixed }........: avg=49.33ms p(50)=44.52ms p(95)=89.49ms p(99)=130.45ms max=325.62ms
+      { endpoint:debit,phase:hot }...........: avg=62.52ms p(50)=61.09ms p(95)=71.09ms p(99)=97.47ms  max=239.11ms
+      { endpoint:debit,phase:mixed }.........: avg=49.48ms p(50)=44.54ms p(95)=89.91ms p(99)=129.42ms max=383.06ms
+      { expected_response:true }.............: avg=46.63ms p(50)=44.12ms p(95)=78.41ms p(99)=114.31ms max=383.06ms
+    http_req_failed..........................: 0.00%  0 out of 192384
+    http_reqs................................: 192384 2024.250062/s
 
     EXECUTION
-    iteration_duration.......................: avg=49.6ms  p(50)=48.13ms p(95)=83.29ms p(99)=120.06ms max=523.35ms
-    iterations...............................: 181445 1909.095531/s
+    iteration_duration.......................: avg=46.77ms p(50)=44.26ms p(95)=78.59ms p(99)=114.55ms max=383.1ms 
+    iterations...............................: 192384 2024.250062/s
     vus......................................: 100    min=0           max=100
     vus_max..................................: 200    min=200         max=200
 
     NETWORK
-    data_received............................: 44 MB  463 kB/s
-    data_sent................................: 34 MB  357 kB/s
+    data_received............................: 47 MB  491 kB/s
+    data_sent................................: 36 MB  379 kB/s
 
 
 
