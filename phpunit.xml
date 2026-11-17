@@ -2,14 +2,15 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         colors="true"
->
+         colors="true">
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
+        <!-- In-process HTTP tests against the ledger_test database. -->
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
+        </testsuite>
+        <!-- Real parallel HTTP requests against the running API on :8080. -->
+        <testsuite name="Concurrency">
+            <directory>tests/Concurrency</directory>
         </testsuite>
     </testsuites>
     <source>
@@ -18,19 +19,25 @@
         </include>
     </source>
     <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
-        <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="BROADCAST_CONNECTION" value="null"/>
-        <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
-        <env name="DB_URL" value=""/>
-        <env name="MAIL_MAILER" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="PULSE_ENABLED" value="false"/>
-        <env name="TELESCOPE_ENABLED" value="false"/>
-        <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <!-- Docker passes DB_DATABASE etc. as real environment variables, which PHP exposes in
+             $_SERVER; Laravel reads $_SERVER before $_ENV. So each override is set as both
+             <server> and <env>, or the container's values would win. -->
+        <server name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_ENV" value="testing" force="true"/>
+        <!-- The container caches config at start-up; point tests at a cache file that never exists. -->
+        <server name="APP_CONFIG_CACHE" value="/tmp/phpunit-no-config-cache.php" force="true"/>
+        <env name="APP_CONFIG_CACHE" value="/tmp/phpunit-no-config-cache.php" force="true"/>
+        <server name="APP_ROUTES_CACHE" value="/tmp/phpunit-no-routes-cache.php" force="true"/>
+        <env name="APP_ROUTES_CACHE" value="/tmp/phpunit-no-routes-cache.php" force="true"/>
+        <server name="DB_DATABASE" value="ledger_test" force="true"/>
+        <env name="DB_DATABASE" value="ledger_test" force="true"/>
+        <server name="DB_PERSISTENT" value="false" force="true"/>
+        <env name="DB_PERSISTENT" value="false" force="true"/>
+        <server name="CACHE_STORE" value="array" force="true"/>
+        <env name="CACHE_STORE" value="array" force="true"/>
+        <server name="SESSION_DRIVER" value="array" force="true"/>
+        <env name="SESSION_DRIVER" value="array" force="true"/>
+        <server name="LOG_CHANNEL" value="stderr" force="true"/>
+        <env name="LOG_CHANNEL" value="stderr" force="true"/>
     </php>
 </phpunit>
