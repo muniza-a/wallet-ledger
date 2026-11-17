@@ -1,0 +1,95 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ledger
+      MYSQL_USER: ledger
+      MYSQL_PASSWORD: ledger
+    # Settings passed as flags (not a mounted my.cnf): MySQL ignores world-writable
+    # config files, which is what bind mounts look like on Docker Desktop for Windows.
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --innodb-buffer-pool-size=2G
+      - --innodb-redo-log-capacity=1G
+      - --innodb-flush-log-at-trx-commit=1
+      - --innodb-lock-wait-timeout=10
+      - --innodb-autoinc-lock-mode=2
+      - --skip-log-bin
+      - --max-connections=300
+      - --local-infile=1
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./sql:/sql:ro
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 3s
+      timeout: 3s
+      retries: 60
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      API_TOKEN: ${API_TOKEN:-recruitment-test-token}
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: base64:Qm9yaW5nTGVkZ2VyS2V5Rm9yTm9FbmNyeXB0aW9uMDE=
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: warning
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ledger
+      DB_USERNAME: ledger
+      DB_PASSWORD: ledger
+      DB_PERSISTENT: "true"
+      LIVE_DB_DATABASE: ledger
+      FPM_WORKERS: ${FPM_WORKERS:-64}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # Calls GET /health with the container's own token (the image has no curl).
+    healthcheck:
+      test: ["CMD", "php", "-r", "$$c = stream_context_create(['http' => ['header' => 'Authorization: Bearer '.getenv('API_TOKEN'), 'ignore_errors' => true, 'timeout' => 2]]); @file_get_contents('http://127.0.0.1:8080/health', false, $$c); exit(str_contains($$http_response_header[0] ?? '', ' 200') ? 0 : 1);"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 60s
+    stop_grace_period: 30s
+
+  k6:
+    image: grafana/k6:latest
+    profiles: ["loadtest"]
+    environment:
+      BASE_URL: http://app:8080
+      API_TOKEN: ${API_TOKEN:-recruitment-test-token}
+    volumes:
+      - ./loadtest:/scripts:ro
+    command: run /scripts/k6.js
+    depends_on:
+      app:
+        condition: service_healthy
+
+    # Optional DB browser for local debugging: docker compose --profile tools up -d adminer
+  adminer:
+    image: adminer:latest
+    profiles: ["tools"]
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
